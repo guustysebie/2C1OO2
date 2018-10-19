@@ -28,11 +28,16 @@ public class ContinentService {
         }
 
         long aantalSterfgevallen = pc.findSterfteCijfer(continent);
+        if (aantalSterfgevallen < 0) {
+            throw new IllegalArgumentException("geen sterfte cijfer gevonden voor gegeven continent");
+        }
         long aantalGeboorten = pc.findGeboortecijfers(continent);
-
+    if (aantalGeboorten < 0) {
+            throw new IllegalArgumentException("geboorteCijfer kleiner dan nul");
+        }
         double geboortecijfer = (double) aantalGeboorten / aantalInwoners * PER_1000_INWONERS;
         double sterftecijfer = (double) aantalSterfgevallen / aantalInwoners * PER_1000_INWONERS;
-
+        
         return geboortecijfer - sterftecijfer;
     }
 }

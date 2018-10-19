@@ -37,13 +37,13 @@ public class ContinentServiceTest {
                 Mockito.verify(persistentieControllerDummy).findGeboortecijfers(CODE);
                 Mockito.verify(persistentieControllerDummy).findSterfteCijfer(CODE);
     }
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void sterfteCijfer_Nul()
     {
         dummyTrainen(30000L, 15020L, 0);
         controleGeboorteOverschot(500.6, 0.09);
     }
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void negatieveGeboortes()
     {
         dummyTrainen(30000L, 0L, 15020L);
@@ -54,6 +54,39 @@ public class ContinentServiceTest {
     public void allesGrensWaarden(){
         dummyTrainen(1L, 0L, 0L);
         controleGeboorteOverschot(0, 0);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void continentIsNull(){
+        contintentService.geefGeboorteOverschot(null);
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void continentIsLeeg(){
+        contintentService.geefGeboorteOverschot("");
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void continentLegeSpaties(){
+        contintentService.geefGeboorteOverschot(" ");
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void ongeldigAantalInwoners_Nul(){
+        dummyTrainen(0L, 184634L, 135136L);
+        contintentService.geefGeboorteOverschot(CODE);
+    }
+     @Test(expected = IllegalArgumentException.class)
+    public void ongeldigAantalInwoners_Negatief(){
+        dummyTrainen(-1L, 184634L, 135136L);
+        contintentService.geefGeboorteOverschot(CODE);
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void ongeldigGeboortes_Negatief(){
+        dummyTrainen(135136L,-1L , 184634L);
+        contintentService.geefGeboorteOverschot(CODE);
+    }
+     @Test(expected = IllegalArgumentException.class)
+    public void ongeldigSterfgevallen_Negatief(){
+        dummyTrainen(135136L, 184634L, -1L);
+        contintentService.geefGeboorteOverschot(CODE);
     }
     
     
